@@ -4,6 +4,9 @@ import json, re, datetime, sys, random, http.cookiejar
 import urllib.request, urllib.parse, urllib.error
 from pyquery import PyQuery
 from .. import models
+from ratelimit import limits
+
+ONE_MINUTE = 60
 
 class TweetManager:
     """A class for accessing the Twitter's search engine"""
@@ -271,6 +274,8 @@ class TweetManager:
         return attr
 
     @staticmethod
+    @sleep_and_retry
+    @limits(calls=15, period=ONE_MINUTE)
     def getJsonResponse(tweetCriteria, refreshCursor, cookieJar, proxy, useragent=None, debug=False):
         """Invoke an HTTP query to Twitter.
         Should not be used as an API function. A static method.
