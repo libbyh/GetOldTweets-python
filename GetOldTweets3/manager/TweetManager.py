@@ -2,7 +2,6 @@
 
 import json, re, datetime, sys, random, http.cookiejar
 import urllib.request, urllib.parse, urllib.error
-from urllib.error import HTTPError
 from pyquery import PyQuery
 from .. import models
 from ratelimit import limits
@@ -348,7 +347,7 @@ class TweetManager:
         try:
             response = opener.open(url)
             jsonResponse = response.read()
-        except HTTPError, e:
+        except urllib.error.HTTPError as e:
         	if e.code == 429:
                 time.sleep(15);
                 response = opener.open(url)
