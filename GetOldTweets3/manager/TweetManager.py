@@ -274,8 +274,8 @@ class TweetManager:
         return attr
 
     @staticmethod
-    @sleep_and_retry
-    @limits(calls=15, period=ONE_MINUTE)
+    # @sleep_and_retry
+    # @limits(calls=15, period=ONE_MINUTE)
     def getJsonResponse(tweetCriteria, refreshCursor, cookieJar, proxy, useragent=None, debug=False):
         """Invoke an HTTP query to Twitter.
         Should not be used as an API function. A static method.
@@ -347,11 +347,10 @@ class TweetManager:
         try:
             response = opener.open(url)
             jsonResponse = response.read()
-        except HTTPError, e:
-	        if e.code == 429:
-	            time.sleep(15)
-	            response = opener.open(url)
-            	jsonResponse = response.read()
+        except HTTPError:
+            time.sleep(15)
+            response = opener.open(url)
+        	jsonResponse = response.read()
         except Exception as e:
             print("An error occured during an HTTP request:", str(e))
             print("Try to open in browser: https://twitter.com/search?q=%s&src=typd" % urllib.parse.quote(urlGetData))
