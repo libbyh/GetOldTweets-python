@@ -342,6 +342,11 @@ class TweetManager:
         try:
             response = opener.open(url)
             jsonResponse = response.read()
+        except HTTPError, e:
+	        if e.code == 429:
+	            time.sleep(15)
+	            response = opener.open(url)
+            	jsonResponse = response.read()
         except Exception as e:
             print("An error occured during an HTTP request:", str(e))
             print("Try to open in browser: https://twitter.com/search?q=%s&src=typd" % urllib.parse.quote(urlGetData))
