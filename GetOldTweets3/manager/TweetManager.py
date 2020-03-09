@@ -4,7 +4,8 @@ import json, re, datetime, sys, random, http.cookiejar
 import urllib.request, urllib.parse, urllib.error
 from pyquery import PyQuery
 from .. import models
-from ratelimit import limits
+# from ratelimit import limits
+import time
 
 ONE_MINUTE = 60
 
